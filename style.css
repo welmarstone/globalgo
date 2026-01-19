@@ -397,3 +397,43 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+/* --- LANGUAGE SWITCHER BUTTON --- */
+.lang-btn-cycle {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 5px 15px;
+  border-radius: 50px; /* Pill shape */
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 20px; /* Space between button and phone number */
+  min-width: 50px; /* Ensures button doesn't shrink when text changes */
+  text-align: center;
+}
+
+.lang-btn-cycle:hover {
+  background: rgba(100, 255, 218, 0.1); /* Subtle glow on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(100, 255, 218, 0.2);
+}
+
+.lang-btn:hover {
+  color: var(--accent);
+}
+
+.lang-btn.active {
+  color: var(--bg-deep);
+  background-color: var(--accent);
+}
+
+/* Adjust mobile layout to include the switcher */
+@media (max-width: 768px) {
+  .header-extras {
+    display: none;
+  } /* Hide phone number on mobile */
+  .lang-switch {
+    margin-right: 50px;
+  } /* Give space for hamburger icon */
+}
