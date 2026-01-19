@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_about: "Biz kimik?",
       nav_services: "Xidmətlər",
       nav_contact: "Bizimlə əlaqə",
+      nav_consult: "Pulsuz konsultasiya",
       hero_sub: "Gələcəyinizə ilk addım",
       hero_title: "Sərhədsiz təhsil,<br> <span>GlobalGo</span> ilə.",
       hero_desc:
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_about: "About Us",
       nav_services: "Services",
       nav_contact: "Contact",
+      nav_consult: "Free Consultation",
       hero_sub: "First step to your future",
       hero_title: "Education without borders,<br> with <span>GlobalGo</span>.",
       hero_desc:
@@ -66,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_about: "О нас",
       nav_services: "Услуги",
       nav_contact: "Контакты",
+      nav_consult: "Бесплатная консультация",
       hero_sub: "Первый шаг к будущему",
       hero_title: "Образование без границ,<br> с <span>GlobalGo</span>.",
       hero_desc:
@@ -128,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!languages.includes(currentLang)) currentLang = "az";
 
   changeLanguage(currentLang);
-
   // --- 4. BUTTON CLICK EVENT (The Cycle Logic) ---
   const toggleBtn = document.getElementById("lang-toggle");
   if (toggleBtn) {
@@ -140,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Set new lang
       currentLang = languages[nextIndex];
       changeLanguage(currentLang);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
