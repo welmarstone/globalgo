@@ -14,58 +14,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  body {
-    font-family:
-      -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif;
-  }
   scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--bg-deep);
   color: var(--text-primary);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
 }
 
 /* --- CREATIVE BACKGROUND EFFECT --- */
-/* --- Add to style.css --- */
-
-/* Ensures the container fills the right side */
-.image-wrapper {
-  position: relative;
-  height: 100%;
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cool-fade-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures photo covers the space without stretching */
-  border-radius: 12px;
-
-  /* THE COOL FADE EFFECT */
-  /* This creates a fade from solid (top) to transparent (bottom) */
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-
-  /* THE BLEND EFFECT (Optional) */
-  /* This makes the photo match your Deep Blue theme */
-  opacity: 0.8;
-  transition: all 0.5s ease;
-}
-
-/* Hover Effect: Brings the photo to full color and focus */
-.cool-fade-img:hover {
-  opacity: 1;
-  transform: scale(1.02); /* Subtle pop */
-  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-}
 body::before {
   content: "";
   position: fixed;
@@ -94,6 +56,7 @@ a {
   color: inherit;
   transition: var(--transition);
 }
+
 ul {
   list-style: none;
 }
@@ -122,6 +85,7 @@ header {
   letter-spacing: 1px;
 }
 
+/* Navigation Links */
 .nav-menu ul {
   display: flex;
   gap: 30px;
@@ -153,6 +117,7 @@ header {
   width: 100%;
 }
 
+/* Header Extras (Lang button, Phone, Socials) */
 .header-extras {
   display: flex;
   align-items: center;
@@ -165,16 +130,41 @@ header {
   font-weight: 500;
   letter-spacing: 0.5px;
 }
+.phone-number:hover {
+  color: var(--accent);
+}
 
 .social-icons a {
   font-size: 1.2rem;
   color: var(--text-secondary);
   margin-left: 10px;
 }
+
 .social-icons a:hover {
   color: var(--accent);
   transform: translateY(-3px);
   display: inline-block;
+}
+
+/* Language Toggle Button */
+.lang-btn-cycle {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 5px 15px;
+  border-radius: 50px; /* Pill shape */
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+.lang-btn-cycle:hover {
+  background: rgba(100, 255, 218, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(100, 255, 218, 0.2);
 }
 
 .mobile-toggle {
@@ -215,6 +205,7 @@ section {
   color: var(--accent);
   margin-bottom: 20px;
 }
+
 .description {
   max-width: 500px;
   color: var(--text-secondary);
@@ -222,8 +213,9 @@ section {
   margin-bottom: 40px;
 }
 
+/* Hero Button */
 .btn {
-  margin: 30px;
+  margin-top: 20px;
   padding: 15px 30px;
   border: 1px solid var(--accent);
   color: var(--accent);
@@ -240,7 +232,7 @@ section {
   transform: translateY(-2px);
 }
 
-/* --- ABOUT --- */
+/* --- ABOUT SECTION --- */
 .section-title {
   display: flex;
   align-items: center;
@@ -263,6 +255,35 @@ section {
   grid-template-columns: 3fr 2fr;
   gap: 50px;
   color: var(--text-secondary);
+}
+
+/* Image Wrapper (Fade Effect) */
+.image-wrapper {
+  position: relative;
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cool-fade-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  /* Fade to transparent at bottom */
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  opacity: 0.8;
+  transition: all 0.5s ease;
+}
+
+.cool-fade-img:hover {
+  opacity: 1;
+  transform: scale(1.02);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
 /* --- SERVICES --- */
@@ -322,10 +343,20 @@ section {
 .big-icons {
   font-size: 1.5rem;
 }
-.contact-phone {
-  margin-top: 30px;
-  font-size: 1.2rem;
+
+/* Contact Links (Bottom area) */
+.contact-phone,
+.contact-website,
+.contact-email {
+  margin-top: 15px;
+  font-size: 1.1rem;
   color: var(--text-secondary);
+  transition: var(--transition);
+}
+.contact-phone:hover,
+.contact-website:hover,
+.contact-email:hover {
+  color: var(--accent);
 }
 
 /* --- FOOTER --- */
@@ -349,16 +380,28 @@ footer {
   transform: translateY(0);
 }
 
-/* --- RESPONSIVE DESIGN --- */
+/* --- RESPONSIVE DESIGN (MOBILE) --- */
 @media (max-width: 768px) {
   header {
     padding: 0 20px;
     height: 70px;
   }
 
+  /* Show the hamburger menu */
   .mobile-toggle {
     display: block;
     z-index: 200;
+  }
+
+  /* Handle Header Extras on Mobile */
+  /* We keep the container to show the Language button, 
+     but hide phone/socials to save space */
+  .header-extras {
+    gap: 10px;
+  }
+  .header-extras .phone-number,
+  .header-extras .social-icons {
+    display: none; /* Hides contact info in header on mobile */
   }
 
   /* Mobile Menu Overlay */
@@ -385,55 +428,13 @@ footer {
   .nav-menu ul {
     flex-direction: column;
     text-align: center;
+    gap: 40px;
   }
 
-  .header-extras {
-    display: none;
-  } /* Simplified for mobile */
   .hero h1 {
     font-size: 2.5rem;
   }
   .about-content {
     grid-template-columns: 1fr;
   }
-}
-/* --- LANGUAGE SWITCHER BUTTON --- */
-.lang-btn-cycle {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  padding: 5px 15px;
-  border-radius: 50px; /* Pill shape */
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-right: 20px; /* Space between button and phone number */
-  min-width: 50px; /* Ensures button doesn't shrink when text changes */
-  text-align: center;
-}
-
-.lang-btn-cycle:hover {
-  background: rgba(100, 255, 218, 0.1); /* Subtle glow on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(100, 255, 218, 0.2);
-}
-
-.lang-btn:hover {
-  color: var(--accent);
-}
-
-.lang-btn.active {
-  color: var(--bg-deep);
-  background-color: var(--accent);
-}
-
-/* Adjust mobile layout to include the switcher */
-@media (max-width: 768px) {
-  .header-extras {
-    display: none;
-  } /* Hide phone number on mobile */
-  .lang-switch {
-    margin-right: 50px;
-  } /* Give space for hamburger icon */
 }

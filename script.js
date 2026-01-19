@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const languages = ["az", "en", "ru"]; // The order of rotation
   const translations = {
     az: {
-      btn_text: "AZ", // What the button shows
+      btn_text: "AZ",
       nav_home: "Əsas səhifə",
       nav_about: "Biz kimik?",
       nav_services: "Xidmətlər",
@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       serv_4: "Konsultasiya",
       serv_4_desc: "Təhsil və karyera planlaması.",
       contact_title: "Bizimlə əlaqə",
+      accent_text: "Növbəti addımı atın",
       contact_sub: "Sualınız var? Bizimlə əlaqə saxlayın.",
       btn_send: "Mesaj göndər",
     },
@@ -43,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       section_about: "Who We Are?",
       about_desc:
         "GlobalGo is a platform making international education accessible.",
+      about_desc_2:
+        "With a professional team and a wide network of universities, we guide you every step of the way.",
       section_services: "Services",
       serv_1: "University Selection",
       serv_1_desc: "Best universities based on your metrics.",
@@ -53,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       serv_4: "Consultation",
       serv_4_desc: "Education and career planning.",
       contact_title: "Contact Us",
+      accent_text: "Take the next step",
       contact_sub: "Have questions? Get in touch with us.",
       btn_send: "Send Message",
     },
@@ -70,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
       section_about: "Кто мы?",
       about_desc:
         "GlobalGo — это платформа, делающая международное образование доступным.",
+      about_desc_2:
+        "С профессиональной командой и широкой сетью университетов мы сопровождаем вас на каждом этапе пути.",
       section_services: "Услуги",
       serv_1: "Выбор ВУЗа",
       serv_1_desc: "Подбор лучших университетов.",
@@ -80,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       serv_4: "Консультация",
       serv_4_desc: "Планирование образования и карьеры.",
       contact_title: "Связаться",
+      accent_text: "Сделайте следующий шаг",
       contact_sub: "Есть вопросы? Напишите нам.",
       btn_send: "Отправить",
     },
@@ -136,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- 5. MOBILE MENU & SCROLL EFFECTS (Existing Code) ---
+  // --- 5. MOBILE MENU & SCROLL EFFECTS ---
   const mobileToggle = document.querySelector(".mobile-toggle");
   const navMenu = document.querySelector(".nav-menu");
   const navLinks = document.querySelectorAll(".nav-menu a");
