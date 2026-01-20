@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (e) {
     console.warn("LocalStorage access denied", e);
   }
-  
+
   let currentLang = urlParams.get("lang") || savedLang || "az";
 
   // Ensure currentLang is valid
@@ -186,10 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach((entry) => {
         // When intersecting, remove the 'pending' class to show it (and add 'active' just in case)
         if (entry.isIntersecting) {
-            entry.target.classList.remove("reveal-pending");
-            entry.target.classList.add("active");
-            // Optional: stop observing once revealed
-            revealObserver.unobserve(entry.target);
+          entry.target.classList.remove("reveal-pending");
+          entry.target.classList.add("active");
+          // Optional: stop observing once revealed
+          revealObserver.unobserve(entry.target);
         }
       });
     },
