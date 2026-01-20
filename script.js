@@ -17,7 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
       btn_apply: "Müraciət et",
       section_about: "Biz kimik?",
       about_desc:
-        "GlobalGo, tələbələrə beynəlxalq təhsil imkanlarını əlçatan edən platformadır.",
+        "GlobalGo, tələbələrə beynəlxalq təhsil imkanlarını əlçatan edən, müasir və etibarlı bir platformadır.",
+      about_desc_2:
+        "Bizim missiyamız, tələbələrin potensialını kəşf etmələrinə kömək etmək və onları dünyanın ən yaxşı universitetləri ilə birləşdirməkdir.",
+      about_desc_3:
+        " Hər tələbənin fərdi ehtiyaclarını nəzərə alaraq, onlara motivasiya məktubunun yazılmasında, sənədlərin hazırlanmasında və viza prosesində dəstək, həmçinin xaricdə yaşayacağı müddət üçün peşəkar məsləhətlər təqdim edirik.",
       section_services: "Xidmətlər",
       serv_1: "Universitet Seçimi",
       serv_1_desc: "Akademik göstəricilərinizə uyğun universitetlər.",
@@ -48,8 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
       section_about: "Who We Are?",
       about_desc:
         "GlobalGo is a platform making international education accessible.",
+
       about_desc_2:
         "With a professional team and a wide network of universities, we guide you every step of the way.",
+      about_desc_3:
+        "We provide personalized support including motivation letter writing, document preparation, and visa process assistance, along with professional advice for your stay abroad.",
       section_services: "Services",
       serv_1: "University Selection",
       serv_1_desc: "Best universities based on your metrics.",
