@@ -469,7 +469,6 @@ footer {
   width: 100%;
   height: 100%;
   z-index: 0; /* Sits at the back */
-<<<<<<< HEAD
   /* Fade Effect: Transparent at top/bottom, visible in middle */
   -webkit-mask-image: linear-gradient(
     to bottom,
@@ -485,8 +484,6 @@ footer {
     black 80%,
     transparent 100%
   );
-=======
->>>>>>> parent of f51d66f (background_gif4)
 }
 
 .video-background video {
