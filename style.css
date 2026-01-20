@@ -76,6 +76,7 @@ header {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: "Montserrat", sans-serif;
 }
 
 .logo {
@@ -83,6 +84,7 @@ header {
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 /* Navigation Links */
