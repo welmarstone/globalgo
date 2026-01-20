@@ -366,7 +366,7 @@ footer {
   text-align: center;
   padding: 20px;
   color: var(--text-secondary);
-  font-size: 0.8rem;
+  font-size: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -456,6 +456,9 @@ footer {
   overflow: hidden; /* Cuts off any video that sticks out */
   /* Remove old background colors if any */
   background: transparent;
+  /* Full Width Override */
+  max-width: 100%;
+  padding: 0;
 }
 
 /* 2. The Video Container */
@@ -466,6 +469,24 @@ footer {
   width: 100%;
   height: 100%;
   z-index: 0; /* Sits at the back */
+<<<<<<< HEAD
+  /* Fade Effect: Transparent at top/bottom, visible in middle */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+=======
+>>>>>>> parent of f51d66f (background_gif4)
 }
 
 .video-background video {
@@ -490,4 +511,7 @@ footer {
 .contact-content-wrapper {
   position: relative;
   z-index: 2; /* Sits on top of the video */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 50px;
 }
