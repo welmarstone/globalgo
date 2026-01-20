@@ -11,8 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_consult: "Pulsuz konsultasiya",
       hero_sub: "Gələcəyinizə ilk addım",
       hero_title: "Sərhədsiz təhsil,<br> <span>GlobalGo</span> ilə.",
-      hero_desc:
-        "Xaricdə təhsil xəyallarınızı reallaşdırmaq üçün peşəkar dəstək.",
+      hero_desc1:
+        "Xaricdə təhsil xəyallarınızı reallaşdırmaq üçün peşəkar dəstək",
+      hero_desc2: "Sənədləşdirmədən qəbula qədər yanınızdayıq",
       btn_apply: "Müraciət et",
       section_about: "Biz kimik?",
       about_desc:
@@ -40,8 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_consult: "Free Consultation",
       hero_sub: "First step to your future",
       hero_title: "Education without borders,<br> with <span>GlobalGo</span>.",
-      hero_desc:
+      hero_desc1:
         "Professional support to realize your dreams of studying abroad.",
+      hero_desc2: "From documentation to admission, we are with you",
       btn_apply: "Apply Now",
       section_about: "Who We Are?",
       about_desc:
@@ -71,8 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_consult: "Бесплатная консультация",
       hero_sub: "Первый шаг к будущему",
       hero_title: "Образование без границ,<br> с <span>GlobalGo</span>.",
-      hero_desc:
+      hero_desc1:
         "Профессиональная поддержка для реализации вашей мечты об обучении за рубежом.",
+      hero_desc2: "От оформления документов до поступления — мы с вами",
       btn_apply: "Подать заявку",
       section_about: "Кто мы?",
       about_desc:

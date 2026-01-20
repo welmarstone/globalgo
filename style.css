@@ -206,13 +206,16 @@ section {
 .accent-text {
   color: var(--accent);
   margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
 }
 
 .description {
   max-width: 500px;
   color: var(--text-secondary);
-  font-size: 1.1rem;
-  margin-bottom: 40px;
+  font-size: 12px;
+  margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Hero Button */
@@ -229,6 +232,7 @@ section {
   display: inline-block;
   position: relative;
   z-index: 10;
+  font-family: "Montserrat", sans-serif;
 }
 
 .btn:hover {
