@@ -118,13 +118,23 @@ document.addEventListener("DOMContentLoaded", () => {
     newUrl.searchParams.set("lang", lang);
     window.history.pushState({}, "", newUrl);
 
-    // Save Preference
-    localStorage.setItem("selectedLang", lang);
+    // Save Preference (Safely)
+    try {
+      localStorage.setItem("selectedLang", lang);
+    } catch (e) {
+      console.warn("LocalStorage access denied", e);
+    }
   }
 
   // --- 3. INITIALIZE ON LOAD ---
   const urlParams = new URLSearchParams(window.location.search);
-  const savedLang = localStorage.getItem("selectedLang");
+  let savedLang = null;
+  try {
+    savedLang = localStorage.getItem("selectedLang");
+  } catch (e) {
+    console.warn("LocalStorage access denied", e);
+  }
+  
   let currentLang = urlParams.get("lang") || savedLang || "az";
 
   // Ensure currentLang is valid
@@ -174,13 +184,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("active");
+        // When intersecting, remove the 'pending' class to show it (and add 'active' just in case)
+        if (entry.isIntersecting) {
+            entry.target.classList.remove("reveal-pending");
+            entry.target.classList.add("active");
+            // Optional: stop observing once revealed
+            revealObserver.unobserve(entry.target);
+        }
       });
     },
     { threshold: 0.15 },
   );
 
-  document
-    .querySelectorAll(".reveal")
-    .forEach((el) => revealObserver.observe(el));
+  document.querySelectorAll(".reveal").forEach((el) => {
+    // Progressive Enhancement: Hide it immediately ONLY if JS is running
+    el.classList.add("reveal-pending");
+    revealObserver.observe(el);
+  });
 });

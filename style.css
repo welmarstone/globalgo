@@ -225,6 +225,8 @@ section {
   transition: var(--transition);
   background: transparent;
   display: inline-block;
+  position: relative;
+  z-index: 10;
 }
 
 .btn:hover {
@@ -369,12 +371,20 @@ footer {
 }
 
 /* --- ANIMATION CLASS (Handled by JS) --- */
+/* DEFAULT: Content is visible so it works without JS */
 .reveal {
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1;
+  transform: translateY(0);
   transition: all 0.8s ease-out;
 }
 
+/* HIDDEN: Applied by JS initially to prepare for animation */
+.reveal.reveal-pending {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* ACTIVE: (Optional legacy support or specific override) */
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
@@ -437,4 +447,47 @@ footer {
   .about-content {
     grid-template-columns: 1fr;
   }
+}
+/* --- VIDEO BACKGROUND SETUP --- */
+
+/* 1. Make the section a container for the video */
+#contact {
+  position: relative;
+  overflow: hidden; /* Cuts off any video that sticks out */
+  /* Remove old background colors if any */
+  background: transparent;
+}
+
+/* 2. The Video Container */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Sits at the back */
+}
+
+.video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video fills the box without stretching */
+}
+
+/* 3. The Dark Overlay (Crucial for readability) */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* This creates a dark blue semi-transparent tint */
+  background: rgba(2, 12, 27, 0.85);
+  z-index: 1;
+}
+
+/* 4. The Content Wrapper */
+.contact-content-wrapper {
+  position: relative;
+  z-index: 2; /* Sits on top of the video */
 }
