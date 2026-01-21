@@ -1,0 +1,41 @@
+﻿window.translations = window.translations || {};
+window.translations.az = {
+  btn_text: "AZ",
+  nav_home: "Əsas səhifə",
+  nav_about: "Biz kimik?",
+  nav_services: "Xidmətlər",
+  nav_contact: "Bizimlə əlaqə",
+  nav_consult: "Pulsuz konsultasiya",
+  hero_sub: "Gələcəyinizə ilk addım",
+  hero_title: "Sərhədsiz təhsil,<br> <span>GlobalGo</span> ilə.",
+  hero_desc:
+    "Xaricdə təhsil xəyallarınızı reallaşdırmaq üçün peşəkar dəstək",
+  hero_desc2: "Sənədləşdirmədən qəbula qədər yanınızdayıq",
+  btn_apply: "Müraciət et",
+  section_about: "Biz kimik?",
+  about_desc:
+    "GlobalGo, tələbələrə beynəlxalq təhsil imkanlarını əlçatan edən, müasir və etibarlı bir platformadır.",
+  about_desc_2:
+    "Bizim missiyamız, tələbələrin potensialını kəşf etmələrinə kömək etmək və onları dünyanın ən yaxşı universitetləri ilə birləşdirməkdir.",
+  about_desc_3:
+    " Hər tələbənin fərdi ehtiyaclarını nəzərə alaraq, onlara motivasiya məktubunun yazılmasında, sənədlərin hazırlanmasında və viza prosesində dəstək, həmçinin xaricdə yaşayacağı müddət üçün peşəkar məsləhətlər təqdim edirik.",
+  section_services: "Xidmətlər",
+  serv_1: "Universitet Seçimi",
+  serv_1_desc: "Akademik göstəricilərinizə uyğun universitetlər.",
+  serv_2: "Sənədləşmə",
+  serv_2_desc: "Qəbul prosesi üçün sənədlərin hazırlanması.",
+  serv_3: "Viza Dəstəyi",
+  serv_3_desc: "Viza müraciəti prosesində tam dəstək.",
+  serv_4: "Konsultasiya",
+  serv_4_desc: "Təhsil və karyera planlaması.",
+  contact_title: "Bizimlə əlaqə",
+  accent_text: "Növbəti addımı atın",
+  contact_sub: "Sualınız var? Bizimlə əlaqə saxlayın.",
+  btn_send: "Mesaj göndər",
+
+  serv_5: "Xarici dil dəstəyi",
+  serv_5_desc: "IELTS, TOEFL və digər imtahanlara peşəkar hazırlıq.",
+  serv_6: "Yeni ölkəyə hazırlıq",
+  serv_6_desc: "Gedəcəyiniz ölkəyə adaptasiya və ilkin məlumatlandırma.",
+};
+

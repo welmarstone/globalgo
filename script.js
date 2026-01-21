@@ -1,139 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- 1. LANGUAGE CONFIGURATION ---
-  const languages = ["az", "en", "ru"]; // The order of rotation
-  const translations = {
-    az: {
-      btn_text: "AZ",
-      nav_home: "Əsas səhifə",
-      nav_about: "Biz kimik?",
-      nav_services: "Xidmətlər",
-      nav_contact: "Bizimlə əlaqə",
-      nav_consult: "Pulsuz konsultasiya",
-      hero_sub: "Gələcəyinizə ilk addım",
-      hero_title: "Sərhədsiz təhsil,<br> <span>GlobalGo</span> ilə.",
-      hero_desc1:
-        "Xaricdə təhsil xəyallarınızı reallaşdırmaq üçün peşəkar dəstək",
-      hero_desc2: "Sənədləşdirmədən qəbula qədər yanınızdayıq",
-      btn_apply: "Müraciət et",
-      section_about: "Biz kimik?",
-      about_desc:
-        "GlobalGo, tələbələrə beynəlxalq təhsil imkanlarını əlçatan edən, müasir və etibarlı bir platformadır.",
-      about_desc_2:
-        "Bizim missiyamız, tələbələrin potensialını kəşf etmələrinə kömək etmək və onları dünyanın ən yaxşı universitetləri ilə birləşdirməkdir.",
-      about_desc_3:
-        " Hər tələbənin fərdi ehtiyaclarını nəzərə alaraq, onlara motivasiya məktubunun yazılmasında, sənədlərin hazırlanmasında və viza prosesində dəstək, həmçinin xaricdə yaşayacağı müddət üçün peşəkar məsləhətlər təqdim edirik.",
-      section_services: "Xidmətlər",
-      serv_1: "Universitet Seçimi",
-      serv_1_desc: "Akademik göstəricilərinizə uyğun universitetlər.",
-      serv_2: "Sənədləşmə",
-      serv_2_desc: "Qəbul prosesi üçün sənədlərin hazırlanması.",
-      serv_3: "Viza Dəstəyi",
-      serv_3_desc: "Viza müraciəti prosesində tam dəstək.",
-      serv_4: "Konsultasiya",
-      serv_4_desc: "Təhsil və karyera planlaması.",
-      contact_title: "Bizimlə əlaqə",
-      accent_text: "Növbəti addımı atın",
-      contact_sub: "Sualınız var? Bizimlə əlaqə saxlayın.",
-      btn_send: "Mesaj göndər",
-    },
-    en: {
-      btn_text: "EN",
-      nav_home: "Home",
-      nav_about: "About Us",
-      nav_services: "Services",
-      nav_contact: "Contact",
-      nav_consult: "Free Consultation",
-      hero_sub: "First step to your future",
-      hero_title: "Education without borders,<br> with <span>GlobalGo</span>.",
-      hero_desc1:
-        "Professional support to realize your dreams of studying abroad.",
-      hero_desc2: "From documentation to admission, we are with you",
-      btn_apply: "Apply Now",
-      section_about: "Who We Are?",
-      about_desc:
-        "GlobalGo is a platform making international education accessible.",
+  const languages = ["az", "en", "ru"];
 
-      about_desc_2:
-        "With a professional team and a wide network of universities, we guide you every step of the way.",
-      about_desc_3:
-        "We provide personalized support including motivation letter writing, document preparation, and visa process assistance, along with professional advice for your stay abroad.",
-      section_services: "Services",
-      serv_1: "University Selection",
-      serv_1_desc: "Best universities based on your metrics.",
-      serv_2: "Documentation",
-      serv_2_desc: "Preparation of all documents for admission.",
-      serv_3: "Visa Support",
-      serv_3_desc: "Full support during the visa process.",
-      serv_4: "Consultation",
-      serv_4_desc: "Education and career planning.",
-      contact_title: "Contact Us",
-      accent_text: "Take the next step",
-      contact_sub: "Have questions? Get in touch with us.",
-      btn_send: "Send Message",
-    },
-    ru: {
-      btn_text: "RU",
-      nav_home: "Главная",
-      nav_about: "О нас",
-      nav_services: "Услуги",
-      nav_contact: "Контакты",
-      nav_consult: "Бесплатная консультация",
-      hero_sub: "Первый шаг к будущему",
-      hero_title: "Образование без границ,<br> с <span>GlobalGo</span>.",
-      hero_desc1:
-        "Профессиональная поддержка для реализации вашей мечты об обучении за рубежом.",
-      hero_desc2: "От оформления документов до поступления — мы с вами",
-      btn_apply: "Подать заявку",
-      section_about: "Кто мы?",
-      about_desc:
-        "GlobalGo — это платформа, делающая международное образование доступным.",
-      about_desc_2:
-        "С профессиональной командой и широкой сетью университетов мы сопровождаем вас на каждом этапе пути.",
-      section_services: "Услуги",
-      serv_1: "Выбор ВУЗа",
-      serv_1_desc: "Подбор лучших университетов.",
-      serv_2: "Документы",
-      serv_2_desc: "Подготовка всех документов для поступления.",
-      serv_3: "Визовая поддержка",
-      serv_3_desc: "Полная поддержка в процессе получения визы.",
-      serv_4: "Консультация",
-      serv_4_desc: "Планирование образования и карьеры.",
-      contact_title: "Связаться",
-      accent_text: "Сделайте следующий шаг",
-      contact_sub: "Есть вопросы? Напишите нам.",
-      btn_send: "Отправить",
-    },
-  };
+  // Helper to load a script dynamically
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      // Check if already loaded
+      if (document.querySelector(`script[src="${src}"]`)) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
 
   // --- 2. CHANGE LANGUAGE FUNCTION ---
-  function changeLanguage(lang) {
-    // Default to AZ if something goes wrong
-    if (!translations[lang]) lang = "az";
+  async function changeLanguage(lang) {
+    if (!languages.includes(lang)) lang = "az";
 
-    // Update all text on the page
+    // 1. Load the language file if needed
+    // We expect the file to populate window.translations[lang]
+    try {
+      await loadScript(`lang/${lang}.js`);
+    } catch (e) {
+      console.error(`Failed to load language: ${lang}`, e);
+      return; // Stop if we can't load the language
+    }
+
+    // 2. Get the dictionary
+    const dictionary = window.translations && window.translations[lang];
+    if (!dictionary) {
+      console.error(`Language loaded but dictionary missing for: ${lang}`);
+      return;
+    }
+
+    // 3. Update all text on the page
     const elements = document.querySelectorAll("[data-key]");
     elements.forEach((el) => {
       const key = el.getAttribute("data-key");
-      if (translations[lang][key]) {
-        el.innerHTML = translations[lang][key];
+      if (dictionary[key]) {
+        el.innerHTML = dictionary[key];
       }
     });
 
-    // Update the Toggle Button Text (Show current lang)
+    // 4. Update the Toggle Button Text
     const toggleBtn = document.getElementById("lang-toggle");
-    if (toggleBtn) toggleBtn.innerText = translations[lang].btn_text;
+    if (toggleBtn && dictionary.btn_text) {
+      toggleBtn.innerText = dictionary.btn_text;
+    }
 
-    // Update URL
+    // 5. Update URL
     const newUrl = new URL(window.location);
     newUrl.searchParams.set("lang", lang);
     window.history.pushState({}, "", newUrl);
 
-    // Save Preference (Safely)
+    // 6. Save Preference
     try {
       localStorage.setItem("selectedLang", lang);
     } catch (e) {
       console.warn("LocalStorage access denied", e);
     }
+
+    // 7. Update currentLang variable so the toggle works correctly
+    currentLang = lang;
   }
 
   // --- 3. INITIALIZE ON LOAD ---
@@ -146,22 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let currentLang = urlParams.get("lang") || savedLang || "az";
-
   // Ensure currentLang is valid
   if (!languages.includes(currentLang)) currentLang = "az";
 
   changeLanguage(currentLang);
+
   // --- 4. BUTTON CLICK EVENT (The Cycle Logic) ---
   const toggleBtn = document.getElementById("lang-toggle");
   if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
       // Find current index
       let index = languages.indexOf(currentLang);
-      // Calculate next index (loops back to 0 if at the end)
+      // Calculate next index
       let nextIndex = (index + 1) % languages.length;
       // Set new lang
-      currentLang = languages[nextIndex];
-      changeLanguage(currentLang);
+      let nextLang = languages[nextIndex];
+      changeLanguage(nextLang);
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
@@ -194,11 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        // When intersecting, remove the 'pending' class to show it (and add 'active' just in case)
         if (entry.isIntersecting) {
           entry.target.classList.remove("reveal-pending");
           entry.target.classList.add("active");
-          // Optional: stop observing once revealed
           revealObserver.unobserve(entry.target);
         }
       });
@@ -207,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   document.querySelectorAll(".reveal").forEach((el) => {
-    // Progressive Enhancement: Hide it immediately ONLY if JS is running
     el.classList.add("reveal-pending");
     revealObserver.observe(el);
   });
