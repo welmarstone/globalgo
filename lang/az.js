@@ -37,5 +37,26 @@ window.translations.az = {
   serv_5_desc: "IELTS, TOEFL və digər imtahanlara peşəkar hazırlıq.",
   serv_6: "Yeni ölkəyə hazırlıq",
   serv_6_desc: "Gedəcəyiniz ölkəyə adaptasiya və ilkin məlumatlandırma.",
+  
+  // AI Section
+  ai_title: "AI Akademik Məsləhətçi",
+  ai_desc: "Məlumatlarınızı daxil edin, Süni İntellekt sizə ən uyğun universitetləri və yol xəritəsini təqdim etsin.",
+  lbl_name: "Ad və Soyad",
+  lbl_age: "Yaş",
+  lbl_citizenship: "Vətəndaşlıq",
+  lbl_target_country: "Hədəf Ölkələr",
+  lbl_education: "Hazırki Təhsil",
+  lbl_major: "İxtisas / Maraq",
+  lbl_gpa: "Ortalama (GPA)",
+  lbl_english: "İngilis dili",
+  opt_high_school: "Orta məktəb",
+  opt_bachelor: "Bakalavr",
+  opt_master: "Magistr",
+  opt_beginner: "Başlanğıc",
+  opt_intermediate: "Orta",
+  opt_advanced: "İrəli",
+  opt_native: "Ana dili",
+  btn_analyze_text: "Analiz et",
+  msg_analyzing: "Sizin üçün ideal yol xəritəsi hazırlanır...",
 };
 

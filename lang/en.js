@@ -38,5 +38,26 @@ window.translations.en = {
   serv_5_desc: "Professional preparation for IELTS, TOEFL and other exams.",
   serv_6: "Pre-departure Orientation",
   serv_6_desc: "Adaptation to the destination country and initial briefing.",
+
+  // AI Section
+  ai_title: "AI Academic Counselor",
+  ai_desc: "Enter your details, and let AI map out the best academic path and universities for you.",
+  lbl_name: "Full Name",
+  lbl_age: "Age",
+  lbl_citizenship: "Citizenship",
+  lbl_target_country: "Target Countries",
+  lbl_education: "Current Education",
+  lbl_major: "Major / Interest",
+  lbl_gpa: "GPA / Grades",
+  lbl_english: "English Level",
+  opt_high_school: "High School",
+  opt_bachelor: "Bachelor's",
+  opt_master: "Master's",
+  opt_beginner: "Beginner",
+  opt_intermediate: "Intermediate",
+  opt_advanced: "Advanced",
+  opt_native: "Native",
+  btn_analyze_text: "Analyze",
+  msg_analyzing: "Preparing your ideal roadmap...",
 };
 

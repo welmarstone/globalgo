@@ -183,6 +183,141 @@ section {
   margin: 0 auto;
 }
 
+/* --- AI COUNSELOR SECTION --- */
+#ai-counselor {
+  padding-bottom: 50px;
+}
+
+.ai-container {
+  background: var(--bg-light);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+}
+
+.ai-description {
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.ai-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  padding: 12px;
+  background: rgba(2, 12, 27, 0.5);
+  border: 1px solid rgba(136, 146, 176, 0.2);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.1);
+}
+
+.ai-btn {
+  align-self: flex-start;
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Loader */
+.loader-wrapper {
+  text-align: center;
+  margin-top: 30px;
+  color: var(--text-secondary);
+}
+
+.loader {
+  border: 3px solid rgba(100, 255, 218, 0.1);
+  border-left-color: var(--accent);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* AI Result Area */
+#ai-response {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+#ai-response h1, #ai-response h2, #ai-response h3 {
+  color: var(--accent);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#ai-response ul {
+  list-style: disc;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+}
+
+#ai-response strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
 /* --- HERO SECTION --- */
 .hero {
   min-height: 100vh;
