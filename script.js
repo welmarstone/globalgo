@@ -188,13 +188,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Gather Data
       const formData = {
         name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
         age: document.getElementById("age").value,
         citizenship: document.getElementById("citizenship").value,
-        targetCountry: document.getElementById("target_country").value,
         education: document.getElementById("education").value,
+        institution: document.getElementById("institution").value,
         major: document.getElementById("major").value,
         gpa: document.getElementById("gpa").value,
-        englishLevel: document.getElementById("english_level").value,
+        targetCountry: document.getElementById("target_country").value,
+        englishLevel: document.getElementById("english_level").value, // Study Language Level
+        eduLang: document.getElementById("edu_lang").value, // Education Language Preferred
         language: currentLang // Send current UI language so AI replies in correct language
       };
 

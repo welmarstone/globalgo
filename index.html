@@ -181,84 +181,103 @@
     </section>
 
     <section id="ai-counselor">
-      <h2 class="section-title reveal" data-key="ai_title">AI Akademik Məsləhətçi</h2>
+      <h2 class="section-title reveal" data-key="ai_title">AI Academic Counselor</h2>
       
       <div class="ai-container reveal">
         <p class="ai-description" data-key="ai_desc">
-          Məlumatlarınızı daxil edin və Süni İntellekt sizə ən uyğun təhsil yolunu xəritələsin.
+          Fill in the form below and let AI help you find the best academic path.
         </p>
 
         <form id="ai-form" class="ai-form">
           <div class="form-row">
             <div class="form-group">
-              <label data-key="lbl_name">Ad və Soyad</label>
-              <input type="text" id="name" required placeholder="..." />
+              <label for="name" data-key="lbl_name">Name</label>
+              <input type="text" id="name" required placeholder="Name" />
             </div>
             <div class="form-group">
-              <label data-key="lbl_age">Yaş</label>
+              <label for="surname" data-key="lbl_surname">Surname</label>
+              <input type="text" id="surname" required placeholder="Surname" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="age" data-key="lbl_age">Age</label>
               <input type="number" id="age" required placeholder="18" />
             </div>
-          </div>
-
-          <div class="form-row">
             <div class="form-group">
-              <label data-key="lbl_citizenship">Vətəndaşlıq</label>
+              <label for="citizenship" data-key="lbl_citizenship">Citizenship</label>
               <input type="text" id="citizenship" required placeholder="Azerbaijan" />
             </div>
-            <div class="form-group">
-              <label data-key="lbl_target_country">Təhsil almaq istədiyiniz ölkə</label>
-              <input type="text" id="target_country" required placeholder="USA, UK, Germany..." />
-            </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label data-key="lbl_education">Hazırki Təhsil Səviyyəniz</label>
+              <label for="education" data-key="lbl_education">Education level</label>
               <select id="education">
-                <option value="high_school" data-key="opt_high_school">Orta məktəb</option>
-                <option value="bachelor" data-key="opt_bachelor">Bakalavr</option>
-                <option value="master" data-key="opt_master">Magistratura</option>
+                <option value="none" data-key="opt_none">None</option>
+                <option value="high_school" data-key="opt_high_school">High school (9-11)</option>
+                <option value="bachelor" data-key="opt_bachelor">Bachelor</option>
+                <option value="master" data-key="opt_master">Master</option>
+                <option value="phd" data-key="opt_phd">PhD</option>
               </select>
             </div>
             <div class="form-group">
-              <label data-key="lbl_major">İxtisas / Maraq sahəsi(1-dən çox ixtisas seçə bilərsiniz)</label>
-              <input type="text" id="major" required placeholder="Computer Science, Business..." />
+              <label for="institution" data-key="lbl_institution">Current institution</label>
+              <input type="text" id="institution" placeholder="School/University name (or 'N/A')" />
             </div>
           </div>
 
-           <div class="form-row">
+          <div class="form-row">
             <div class="form-group">
-              <label data-key="lbl_gpa">Ortalama (GPA / Attestat)</label>
-              <input type="text" id="gpa" required placeholder="85/100 or 3.5/4.0" />
+              <label for="major" data-key="lbl_major">Major / Field of study</label>
+              <input type="text" id="major" placeholder=" Computer science" />
             </div>
             <div class="form-group">
-              <label data-key="lbl_english">İngilis dili səviyyəsi</label>
+              <label for="gpa" data-key="lbl_gpa">GPA / Grade point average</label>
+              <input type="text" id="gpa" placeholder="90/100 or 3.5/4.0" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="target_country" data-key="lbl_target">Target country</label>
+              <input type="text" id="target_country" placeholder="USA, Germany" />
+            </div>
+            <div class="form-group">
+              <label for="edu_lang" data-key="lbl_edu_lang">Study language</label>
+              <input type="text" id="edu_lang" placeholder=" English, German" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="english_level" data-key="lbl_lang_level">Study language level</label>
               <select id="english_level">
-                <option value="beginner" data-key="opt_beginner">Başlanğıc (A1-A2)</option>
-                <option value="intermediate" data-key="opt_intermediate">Başlanğıc-Orta (B1)</option>
-                <option value="advanced" data-key="opt_upper_int">Orta(B2)</option>
-                <option value="advanced" data-key="opt_advanced">İrəli (C1-C2)</option>
-                <option value="native" data-key="opt_native">Ana dili</option>
+                <option value="beginner" data-key="opt_beginner">Beginner (A1-A2)</option>
+                <option value="intermediate" data-key="opt_intermediate">Intermediate (B1-B2)</option>
+                <option value="advanced" data-key="opt_advanced">Advanced (C1-C2)</option>
+                <option value="native" data-key="opt_native">Native</option>
               </select>
             </div>
           </div>
 
           <button type="submit" class="btn ai-btn" data-key="btn_analyze">
-            <i class="fas fa-magic"></i> <span data-key="btn_analyze_text">Analiz et</span>
+            <i class="fas fa-magic"></i> <span data-key="btn_analyze_text">Analyze</span>
           </button>
         </form>
 
         <div id="ai-result-container" class="hidden">
             <div class="loader-wrapper hidden" id="ai-loader">
                 <div class="loader"></div>
-                <p data-key="msg_analyzing">Sizin üçün ideal yol xəritəsi hazırlanır...</p>
+                <p data-key="msg_analyzing">Your ideal path is being prepared...</p>
             </div>
             <div id="ai-response" class="markdown-body hidden"></div>
             
             <!-- Chat Interface for Follow-up Questions -->
             <div id="chat-section" class="chat-section hidden">
                 <h3 class="chat-title" data-key="chat_title">Ask Follow-up Questions</h3>
-                <p class="chat-subtitle" data-key="chat_subtitle">Have more questions? Ask your counselor!</p>
+                <p class="chat-subtitle" data-key="chat_subtitle">Have more questions? Ask your academic counselor!</p>
                 
                 <div id="chat-history" class="chat-history"></div>
                 

@@ -35,7 +35,7 @@ app.post('/api/analyze', async (req, res) => {
             : 'Respond in English.';
 
         const prompt = `
-You are ${studentData.name}'s personal academic counselor at GlobalGo with 15+ years of experience placing students from ${studentData.citizenship} into top universities. You have just completed a 1-hour consultation with them. Now write your personalized counseling report.
+You are ${studentData.name} ${studentData.surname}'s personal academic counselor at GlobalGo with 15+ years of experience placing students from ${studentData.citizenship} into top universities. You have just completed a 1-hour consultation with them. Now write your personalized counseling report.
 
 **CRITICAL RULES - AVOID GENERIC ADVICE:**
 ❌ DO NOT give vague advice like "study hard" or "prepare well"
@@ -43,18 +43,19 @@ You are ${studentData.name}'s personal academic counselor at GlobalGo with 15+ y
 ❌ DO NOT give score ranges without SPECIFIC target numbers
 ❌ DO NOT give generic timelines - provide ACTUAL month-by-month plans
 ✅ BE EXTREMELY SPECIFIC with names, numbers, dates, and programs
-✅ REFERENCE their exact GPA (${studentData.gpa}), age (${studentData.age}), and major (${studentData.major}) in your advice
+✅ REFERENCE their exact GPA (${studentData.gpa}), age (${studentData.age}), matching major (${studentData.major}) and current institution (${studentData.institution}) in your advice
 ✅ EXPLAIN your reasoning for every recommendation
 
 **Student Profile:**
-- Name: ${studentData.name}
+- Name: ${studentData.name} ${studentData.surname}
 - Age: ${studentData.age} years old
 - From: ${studentData.citizenship}
-- Wants to study in: ${studentData.targetCountry}
-- Current Level: ${studentData.education}
+- Current Education: ${studentData.education} (at ${studentData.institution})
 - Interested in: ${studentData.major}
 - Current GPA: ${studentData.gpa}
-- English Level: ${studentData.englishLevel}
+- Wants to study in: ${studentData.targetCountry}
+- Preferred Study Language: ${studentData.eduLang}
+- Language Level: ${studentData.englishLevel}
 
 **Language:** ${languageInstruction}
 
@@ -201,14 +202,15 @@ app.post('/api/chat', async (req, res) => {
         // Build conversation context from history
         let conversationContext = `
 **Original Student Profile:**
-- Name: ${studentProfile.name}
+- Name: ${studentProfile.name} ${studentProfile.surname}
 - Age: ${studentProfile.age}
 - From: ${studentProfile.citizenship}
-- Target: ${studentProfile.targetCountry}
-- Education: ${studentProfile.education}
+- Current Education: ${studentProfile.education} (at ${studentProfile.institution})
 - Major: ${studentProfile.major}
 - GPA: ${studentProfile.gpa}
-- English Level: ${studentProfile.englishLevel}
+- Target: ${studentProfile.targetCountry}
+- Preferred Study Language: ${studentProfile.eduLang}
+- Language Level: ${studentProfile.englishLevel}
 `;
 
         // Add conversation history
@@ -237,7 +239,7 @@ ${languageInstruction}
 **CRITICAL RULES:**
 - Answer SPECIFICALLY based on ${studentProfile.name}'s profile data shown above
 - Reference their exact GPA (${studentProfile.gpa}), major (${studentProfile.major}), target country (${studentProfile.targetCountry})
-- Be conversational but professional
+- Be conversational but professional, keep it precise and concise, but of course add the necessary details to make it clear and helpful
 - Give actionable, concrete advice with SPECIFIC numbers, names, and deadlines
 - If they ask about universities, name SPECIFIC universities and programs
 - If they ask about tests, give EXACT score targets
