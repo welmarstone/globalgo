@@ -55,6 +55,7 @@ window.translations.en = {
   opt_master: "Master's",
   opt_beginner: "Beginner",
   opt_intermediate: "Intermediate",
+  opt_upper_int: "Upper Intermediate",
   opt_advanced: "Advanced",
   opt_native: "Native",
   btn_analyze_text: "Analyze",
