@@ -158,6 +158,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultContainer = document.getElementById("ai-result-container");
   const aiLoader = document.getElementById("ai-loader");
   const aiResponse = document.getElementById("ai-response");
+  const chatSection = document.getElementById("chat-section");
+  const chatHistory = document.getElementById("chat-history");
+  const chatInput = document.getElementById("chat-input");
+  const chatSendBtn = document.getElementById("chat-send-btn");
+  const chatLoader = document.getElementById("chat-loader");
+
+  // Store student profile and conversation history
+  let studentProfile = null;
+  let conversationHistory = [];
+  let initialResponse = "";
 
   if (aiForm) {
     aiForm.addEventListener("submit", async (e) => {
@@ -167,7 +177,13 @@ document.addEventListener("DOMContentLoaded", () => {
       resultContainer.classList.remove("hidden");
       aiLoader.classList.remove("hidden");
       aiResponse.classList.add("hidden");
+      
+      chatSection.style.display = "none"; // Reset display
+      chatSection.classList.add("hidden");
+      
       aiResponse.innerHTML = "";
+      chatHistory.innerHTML = "";
+      conversationHistory = [];
 
       // Gather Data
       const formData = {
@@ -181,6 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
         englishLevel: document.getElementById("english_level").value,
         language: currentLang // Send current UI language so AI replies in correct language
       };
+
+      // Store student profile for chat
+      studentProfile = formData;
 
       try {
         const response = await fetch("http://localhost:3000/api/analyze", {
@@ -232,7 +251,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 .replace(/\n/g, '<br>');
 
             aiResponse.innerHTML = html;
+            initialResponse = data.advice;
+
+            // Show chat section immediately
+            console.log("Showing chat section...");
+            chatSection.style.display = "block"; // Force display
+            chatSection.classList.remove("hidden");
+            
+            // Scroll to chat section smoothly
+            setTimeout(() => {
+                console.log("Scrolling to chat section...");
+                chatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
         } else {
+            console.error("No advice data received");
             aiResponse.innerHTML = "<p style='color:red'>Error: Could not generate advice.</p>";
         }
 
@@ -242,6 +275,105 @@ document.addEventListener("DOMContentLoaded", () => {
       } finally {
         aiLoader.classList.add("hidden");
         aiResponse.classList.remove("hidden");
+      }
+    });
+  }
+
+  // --- 7. CHAT FUNCTIONALITY ---
+  async function sendChatMessage() {
+    const question = chatInput.value.trim();
+    if (!question || !studentProfile) return;
+
+    // Add user message to chat history display
+    addMessageToChat('user', question);
+    
+    // Clear input and disable while processing
+    chatInput.value = "";
+    chatInput.disabled = true;
+    chatSendBtn.disabled = true;
+    chatLoader.classList.remove("hidden");
+
+    try {
+      const response = await fetch("http://localhost:3000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentProfile: studentProfile,
+          conversationHistory: conversationHistory,
+          question: question,
+          language: currentLang
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.answer) {
+        // Add AI response to chat
+        addMessageToChat('ai', data.answer);
+        
+        // Update conversation history
+        conversationHistory.push(
+          { type: 'user', content: question },
+          { type: 'ai', content: data.answer }
+        );
+      } else {
+        addMessageToChat('ai', "Sorry, I couldn't generate a response. Please try again.");
+      }
+
+    } catch (error) {
+      console.error("Chat error:", error);
+      addMessageToChat('ai', "Connection error. Please make sure the server is running.");
+    } finally {
+      chatInput.disabled = false;
+      chatSendBtn.disabled = false;
+      chatLoader.classList.add("hidden");
+      chatInput.focus();
+    }
+  }
+
+  function addMessageToChat(type, content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message chat-message-${type}`;
+    
+    if (type === 'user') {
+      messageDiv.innerHTML = `
+        <div class="chat-message-header">
+          <i class="fas fa-user"></i>
+          <strong>You</strong>
+        </div>
+        <div class="chat-message-content">${content}</div>
+      `;
+    } else {
+      // Format AI response (simple markdown)
+      let formattedContent = content
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+      
+      messageDiv.innerHTML = `
+        <div class="chat-message-header">
+          <i class="fas fa-robot"></i>
+          <strong>AI Counselor</strong>
+        </div>
+        <div class="chat-message-content">${formattedContent}</div>
+      `;
+    }
+    
+    chatHistory.appendChild(messageDiv);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
+
+  // Chat event listeners
+  if (chatSendBtn) {
+    chatSendBtn.addEventListener('click', sendChatMessage);
+  }
+
+  if (chatInput) {
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendChatMessage();
       }
     });
   }

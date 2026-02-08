@@ -58,5 +58,9 @@ window.translations.az = {
   opt_native: "Ana dili",
   btn_analyze_text: "Analiz et",
   msg_analyzing: "Sizin üçün ideal yol xəritəsi hazırlanır...",
+  chat_title: "Əlavə suallar verin",
+  chat_subtitle: "Daha çox sual var? Məsləhətçinizdən soruşun!",
+  chat_placeholder: "Sual verin...",
+  msg_thinking: "Düşünürəm...",
 };
 

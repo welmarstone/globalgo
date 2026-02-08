@@ -179,6 +179,95 @@ Create a CONCRETE timeline:
     }
 });
 
+// New endpoint for follow-up chat questions
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { studentProfile, conversationHistory, question, language } = req.body;
+        
+        // Log incoming chat request
+        console.log('\n💬 Follow-up question received:');
+        console.log(`   Student: ${studentProfile.name}`);
+        console.log(`   Question: ${question}`);
+        console.log(`   Language: ${language || 'en'}`);
+
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+        const languageInstruction = language === 'ru' 
+            ? 'Respond in Russian (Русский язык).'
+            : language === 'az'
+            ? 'Respond in Azerbaijani (Azərbaycan dili).'
+            : 'Respond in English.';
+
+        // Build conversation context from history
+        let conversationContext = `
+**Original Student Profile:**
+- Name: ${studentProfile.name}
+- Age: ${studentProfile.age}
+- From: ${studentProfile.citizenship}
+- Target: ${studentProfile.targetCountry}
+- Education: ${studentProfile.education}
+- Major: ${studentProfile.major}
+- GPA: ${studentProfile.gpa}
+- English Level: ${studentProfile.englishLevel}
+`;
+
+        // Add conversation history
+        if (conversationHistory && conversationHistory.length > 0) {
+            conversationContext += `\n\n**Previous Conversation:**\n`;
+            conversationHistory.forEach((msg, idx) => {
+                if (msg.type === 'user') {
+                    conversationContext += `\nStudent asked: "${msg.content}"\n`;
+                } else {
+                    conversationContext += `\nYou answered: "${msg.content}"\n`;
+                }
+            });
+        }
+
+        const chatPrompt = `
+You are ${studentProfile.name}'s personal academic counselor at GlobalGo. You previously provided them with a comprehensive counseling report based on their profile.
+
+${conversationContext}
+
+**New Question from ${studentProfile.name}:**
+"${question}"
+
+**Instructions:**
+${languageInstruction}
+
+**CRITICAL RULES:**
+- Answer SPECIFICALLY based on ${studentProfile.name}'s profile data shown above
+- Reference their exact GPA (${studentProfile.gpa}), major (${studentProfile.major}), target country (${studentProfile.targetCountry})
+- Be conversational but professional
+- Give actionable, concrete advice with SPECIFIC numbers, names, and deadlines
+- If they ask about universities, name SPECIFIC universities and programs
+- If they ask about tests, give EXACT score targets
+- If they ask about deadlines, provide SPECIFIC dates/months
+- Continue using their name (${studentProfile.name}) in your response
+
+Keep your response focused and concise (max 500 words unless they specifically ask for detailed information).
+
+Provide helpful, specific guidance as their personal counselor.
+        `;
+
+        console.log(' Calling Gemini API for chat...');
+        const result = await model.generateContent(chatPrompt);
+        const response = await result.response;
+        const text = response.text();
+
+        console.log('✅ Chat response generated successfully\n');
+        res.json({ answer: text });
+
+    } catch (error) {
+        console.error('❌ Error in chat endpoint:', error);
+        
+        const errorMessage = error.message || 'Unknown error occurred';
+        res.status(500).json({ 
+            error: 'Failed to generate chat response',
+            details: errorMessage
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

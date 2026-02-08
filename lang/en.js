@@ -60,5 +60,9 @@ window.translations.en = {
   opt_native: "Native",
   btn_analyze_text: "Analyze",
   msg_analyzing: "Preparing your ideal roadmap...",
+  chat_title: "Ask Follow-up Questions",
+  chat_subtitle: "Have more questions? Ask your counselor!",
+  chat_placeholder: "Ask a question...",
+  msg_thinking: "Thinking...",
 };
 

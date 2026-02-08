@@ -254,6 +254,32 @@
                 <p data-key="msg_analyzing">Sizin üçün ideal yol xəritəsi hazırlanır...</p>
             </div>
             <div id="ai-response" class="markdown-body hidden"></div>
+            
+            <!-- Chat Interface for Follow-up Questions -->
+            <div id="chat-section" class="chat-section" style="display: none;">
+                <h3 class="chat-title" data-key="chat_title">Ask Follow-up Questions</h3>
+                <p class="chat-subtitle" data-key="chat_subtitle">Have more questions? Ask your counselor!</p>
+                
+                <div id="chat-history" class="chat-history"></div>
+                
+                <div class="chat-input-container">
+                    <input 
+                        type="text" 
+                        id="chat-input" 
+                        class="chat-input" 
+                        placeholder="Ask a question..."
+                        data-key-placeholder="chat_placeholder"
+                    />
+                    <button id="chat-send-btn" class="chat-send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div class="chat-loader hidden" id="chat-loader">
+                    <div class="loader-small"></div>
+                    <span data-key="msg_thinking">Thinking...</span>
+                </div>
+            </div>
         </div>
       </div>
     </section>
