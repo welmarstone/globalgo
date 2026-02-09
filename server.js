@@ -14,20 +14,17 @@ app.use(express.static('.')); // Serve static files from current directory
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const os = require('os');
-const multer = require('multer');
-const upload = multer({ dest: os.tmpdir() });
+const fs = require('fs');
+const path = require('path');
 
-app.post('/api/analyze', upload.single('transcript'), async (req, res) => {
+app.post('/api/analyze', async (req, res) => {
     try {
         const studentData = req.body;
-        const transcriptFile = req.file;
         
         // Log incoming request
         console.log('\n📋 New counseling request received:');
         console.log(`   Student: ${studentData.name}`);
         console.log(`   Citizenship: ${studentData.citizenship}`);
-        if(transcriptFile) console.log(`   📂 Transcript uploaded: ${transcriptFile.originalname}`);
 
         // --- 1. Load Scholarship Data ---
         const scholarshipsPath = path.join(__dirname, 'data', 'scholarships.json');
@@ -77,79 +74,54 @@ app.post('/api/analyze', upload.single('transcript'), async (req, res) => {
         ];
 
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-2.0-flash-exp",
+            model: "gemini-1.5-flash",
             tools: tools
         });
 
         // --- 4. Prepare Prompt ---
         const languageInstruction = studentData.language === 'ru' ? 'Respond in Russian.' : studentData.language === 'az' ? 'Respond in Azerbaijani.' : 'Respond in English.';
 
-        let promptText = `
+        const prompt = `
 You are ${studentData.name}'s academic counselor.
 Student Profile:
+- Name: ${studentData.name} ${studentData.surname}
+- Age: ${studentData.age}
 - Citizenship: ${studentData.citizenship}
 - Target Country: ${studentData.targetCountry}
 - Major: ${studentData.major}
+- GPA: ${studentData.gpa}
 - Level: ${studentData.education}
-`;
+- Institution: ${studentData.institution}
+- English Level: ${studentData.englishLevel}
+- Preferred Lang: ${studentData.eduLang}
 
-        // Handle Transcript
-        let imageParts = [];
-        if (transcriptFile) {
-            const mimeType = transcriptFile.mimetype;
-            const fileData = fs.readFileSync(transcriptFile.path);
-            const imageBase64 = fileData.toString('base64');
-            
-            imageParts.push({
-                inlineData: {
-                    data: imageBase64,
-                    mimeType: mimeType
-                }
-            });
-
-            promptText += `
-**TRANSCRIPT UPLOADED:**
-I have attached the student's transcript. 
-TASK 1: ANALYZE the transcript first. Calculate/Verify their GPA/Average grade from the file. 
-- If their calculated GPA is different from what they stated (${studentData.gpa}), politely mention the calculated one.
-- Incorporate specific course grades from the transcript into your advice (e.g., "I see you scored high in Math...").
-`;
-        } else {
-            promptText += `- Self-Reported GPA: ${studentData.gpa}\n`;
-        }
-
-        promptText += `
 Task: Write a detailed counseling report.
 IMPORTANT: CHECK for scholarships first using the \`get_scholarships\` tool!
 
 ${languageInstruction}
 
 Report Structure:
-1. **Transcript Analysis** (ONLY if transcript provided):
-   - Calculated GPA/Average
-   - Key Strengths (Subject-wise)
-   - Weaknesses (if any)
-2. Profile Assessment (General)
-3. University Recommendations
-4. Scholarship Opportunities (Use the tool data!)
-5. Action Plan
+1. Profile Assessment
+2. University Recommendations
+3. Scholarship Opportunities (Use the tool data!)
+   - Name
+   - Amount
+   - Why it fits
+4. Action Plan
+5. Top 3 Priorities
 `;
 
-        // --- 5. Chat Loop using startChat ---
-        // Note: content parts order: text first? or image first? Usually image then text is safe, or mix.
-        // But startChat history structure is strict. 
-        // For multimodal chat, we pass the initial message with the file.
-        
-        // We cannot use 'history' in startChat with images easily if it's the *first* turn locally constructed.
-        // It's easier to just startChat empty and send the first message WITH the parts.
-        
+        // --- 5. Chat Loop (to handle function calling) ---
         const chat = model.startChat({
-            tools: tools
+            history: [
+                {
+                    role: "user",
+                    parts: [{ text: prompt }],
+                },
+            ],
         });
 
-        const initialParts = [...imageParts, { text: promptText }];
-        
-        let result = await chat.sendMessage(initialParts);
+        let result = await chat.sendMessage("Start analysis.");
         let response = result.response;
         
         // Handle function calls
@@ -181,20 +153,11 @@ Report Structure:
 
         const text = response.text();
         console.log('✅ Response generated successfully');
-        
-        // Cleanup uploaded file
-        if (transcriptFile) {
-            try {
-                if (fs.existsSync(transcriptFile.path)) fs.unlinkSync(transcriptFile.path);
-            } catch (e) {
-                console.error("Failed to delete file:", e);
-            }
-        }
-
         res.json({ advice: text });
 
     } catch (error) {
         console.error('❌ Error calling Gemini API:', error);
+        fs.writeFileSync('error.log', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
         res.status(500).json({ 
             error: 'Failed to generate advice',
             details: error.message 
@@ -213,7 +176,7 @@ app.post('/api/chat', async (req, res) => {
         console.log(`   Question: ${question}`);
         console.log(`   Language: ${language || 'en'}`);
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const languageInstruction = language === 'ru' 
             ? 'Respond in Russian (Русский язык).'

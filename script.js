@@ -186,27 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       conversationHistory = [];
 
       // Gather Data
-      const formData = new FormData();
-      formData.append("name", document.getElementById("name").value);
-      formData.append("surname", document.getElementById("surname").value);
-      formData.append("age", document.getElementById("age").value);
-      formData.append("citizenship", document.getElementById("citizenship").value);
-      formData.append("education", document.getElementById("education").value);
-      formData.append("institution", document.getElementById("institution").value);
-      formData.append("major", document.getElementById("major").value);
-      formData.append("gpa", document.getElementById("gpa").value);
-      formData.append("targetCountry", document.getElementById("target_country").value);
-      formData.append("englishLevel", document.getElementById("english_level").value);
-      formData.append("eduLang", document.getElementById("edu_lang").value);
-      formData.append("language", currentLang);
-
-      const transcriptFile = document.getElementById("transcript").files[0];
-      if (transcriptFile) {
-        formData.append("transcript", transcriptFile);
-      }
-
-      // Store student profile for chat (we can't store the file object easily in memory for chat, but text data is fine)
-      studentProfile = {
+      const formData = {
         name: document.getElementById("name").value,
         surname: document.getElementById("surname").value,
         age: document.getElementById("age").value,
@@ -221,11 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
         language: currentLang
       };
 
+      // Store student profile for chat
+      studentProfile = formData;
+
       try {
         const response = await fetch("http://localhost:3000/api/analyze", {
           method: "POST",
-          // Headers handled automatically for FormData
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         });
 
         const data = await response.json();
