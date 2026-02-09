@@ -14,168 +14,190 @@ app.use(express.static('.')); // Serve static files from current directory
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-app.post('/api/analyze', async (req, res) => {
+const os = require('os');
+const multer = require('multer');
+const upload = multer({ dest: os.tmpdir() });
+
+app.post('/api/analyze', upload.single('transcript'), async (req, res) => {
     try {
         const studentData = req.body;
+        const transcriptFile = req.file;
         
-        // Log incoming request for debugging
+        // Log incoming request
         console.log('\n📋 New counseling request received:');
         console.log(`   Student: ${studentData.name}`);
-        console.log(`   Target: ${studentData.targetCountry}`);
-        console.log(`   Education: ${studentData.education}`);
-        console.log(`   Language: ${studentData.language || 'en'}`);
+        console.log(`   Citizenship: ${studentData.citizenship}`);
+        if(transcriptFile) console.log(`   📂 Transcript uploaded: ${transcriptFile.originalname}`);
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        // --- 1. Load Scholarship Data ---
+        const scholarshipsPath = path.join(__dirname, 'data', 'scholarships.json');
+        let allScholarships = [];
+        try {
+            const data = fs.readFileSync(scholarshipsPath, 'utf8');
+            allScholarships = JSON.parse(data);
+        } catch (err) {
+            console.error("Error loading scholarships:", err);
+        }
 
-        // Enhanced prompt with better structure and language support
-        const languageInstruction = studentData.language === 'ru' 
-            ? 'Respond in Russian (Русский язык).'
-            : studentData.language === 'az'
-            ? 'Respond in Azerbaijani (Azərbaycan dili).'
-            : 'Respond in English.';
+        // --- 2. Define the Tool (Function) ---
+        const getScholarships = (args) => {
+            console.log("🛠️ Tool called: getScholarships with args:", args);
+            const { target_country, citizenship, name } = args;
+            
+            return allScholarships.filter(s => {
+                if (name && !s.name.toLowerCase().includes(name.toLowerCase())) return false;
+                if (target_country && s.target_country.toLowerCase() !== target_country.toLowerCase() && target_country.toLowerCase() !== 'eu') return false;
+                if (citizenship) {
+                    const eligible = s.eligible_citizenships.map(c => c.toLowerCase());
+                    if (!eligible.includes('all') && !eligible.includes(citizenship.toLowerCase())) return false;
+                }
+                return true;
+            });
+        };
 
-        const prompt = `
-You are ${studentData.name} ${studentData.surname}'s personal academic counselor at GlobalGo with 15+ years of experience placing students from ${studentData.citizenship} into top universities. You have just completed a 1-hour consultation with them. Now write your personalized counseling report.
+        // --- 3. Initialize Model with Tools ---
+        const tools = [
+            {
+                functionDeclarations: [
+                    {
+                        name: "get_scholarships",
+                        description: "Get a list of scholarships based on the student's citizenship and target country. RETURNS A JSON LIST.",
+                        parameters: {
+                            type: "object",
+                            properties: {
+                                citizenship: { type: "string" },
+                                target_country: { type: "string" },
+                                name: { type: "string" }
+                            },
+                            required: ["citizenship"]
+                        }
+                    }
+                ]
+            }
+        ];
 
-**CRITICAL RULES - AVOID GENERIC ADVICE:**
-❌ DO NOT give vague advice like "study hard" or "prepare well"
-❌ DO NOT list universities without explaining WHY they fit THIS student
-❌ DO NOT give score ranges without SPECIFIC target numbers
-❌ DO NOT give generic timelines - provide ACTUAL month-by-month plans
-✅ BE EXTREMELY SPECIFIC with names, numbers, dates, and programs
-✅ REFERENCE their exact GPA (${studentData.gpa}), age (${studentData.age}), matching major (${studentData.major}) and current institution (${studentData.institution}) in your advice
-✅ EXPLAIN your reasoning for every recommendation
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-2.0-flash-exp",
+            tools: tools
+        });
 
-**Student Profile:**
-- Name: ${studentData.name} ${studentData.surname}
-- Age: ${studentData.age} years old
-- From: ${studentData.citizenship}
-- Current Education: ${studentData.education} (at ${studentData.institution})
-- Interested in: ${studentData.major}
-- Current GPA: ${studentData.gpa}
-- Wants to study in: ${studentData.targetCountry}
-- Preferred Study Language: ${studentData.eduLang}
-- Language Level: ${studentData.englishLevel}
+        // --- 4. Prepare Prompt ---
+        const languageInstruction = studentData.language === 'ru' ? 'Respond in Russian.' : studentData.language === 'az' ? 'Respond in Azerbaijani.' : 'Respond in English.';
 
-**Language:** ${languageInstruction}
+        let promptText = `
+You are ${studentData.name}'s academic counselor.
+Student Profile:
+- Citizenship: ${studentData.citizenship}
+- Target Country: ${studentData.targetCountry}
+- Major: ${studentData.major}
+- Level: ${studentData.education}
+`;
 
----
+        // Handle Transcript
+        let imageParts = [];
+        if (transcriptFile) {
+            const mimeType = transcriptFile.mimetype;
+            const fileData = fs.readFileSync(transcriptFile.path);
+            const imageBase64 = fileData.toString('base64');
+            
+            imageParts.push({
+                inlineData: {
+                    data: imageBase64,
+                    mimeType: mimeType
+                }
+            });
 
-## 📊 Profile Assessment - ${studentData.name}
+            promptText += `
+**TRANSCRIPT UPLOADED:**
+I have attached the student's transcript. 
+TASK 1: ANALYZE the transcript first. Calculate/Verify their GPA/Average grade from the file. 
+- If their calculated GPA is different from what they stated (${studentData.gpa}), politely mention the calculated one.
+- Incorporate specific course grades from the transcript into your advice (e.g., "I see you scored high in Math...").
+`;
+        } else {
+            promptText += `- Self-Reported GPA: ${studentData.gpa}\n`;
+        }
 
-Start with: "Hi ${studentData.name}, based on our consultation..."
+        promptText += `
+Task: Write a detailed counseling report.
+IMPORTANT: CHECK for scholarships first using the \`get_scholarships\` tool!
 
-Then provide:
-- **Specific** analysis of their ${studentData.gpa} GPA for ${studentData.major} programs
-- How competitive they are SPECIFICALLY for ${studentData.targetCountry} (use percentages if possible)
-- Their EXACT strengths based on their profile
-- SPECIFIC areas where they need improvement (with concrete examples)
-- Compare them to typical admitted students (e.g., "Students with your profile typically have X% admission rate to...")
+${languageInstruction}
 
-## 📝 Required Tests & Target Scores
+Report Structure:
+1. **Transcript Analysis** (ONLY if transcript provided):
+   - Calculated GPA/Average
+   - Key Strengths (Subject-wise)
+   - Weaknesses (if any)
+2. Profile Assessment (General)
+3. University Recommendations
+4. Scholarship Opportunities (Use the tool data!)
+5. Action Plan
+`;
 
-**DO NOT say "IELTS 6.5-7.0" - That's too vague!**
+        // --- 5. Chat Loop using startChat ---
+        // Note: content parts order: text first? or image first? Usually image then text is safe, or mix.
+        // But startChat history structure is strict. 
+        // For multimodal chat, we pass the initial message with the file.
+        
+        // We cannot use 'history' in startChat with images easily if it's the *first* turn locally constructed.
+        // It's easier to just startChat empty and send the first message WITH the parts.
+        
+        const chat = model.startChat({
+            tools: tools
+        });
 
-Instead, provide:
+        const initialParts = [...imageParts, { text: promptText }];
+        
+        let result = await chat.sendMessage(initialParts);
+        let response = result.response;
+        
+        // Handle function calls
+        const maxTurns = 5;
+        let turn = 0;
 
-**For English Proficiency (given they are "${studentData.englishLevel}"):**
-- Exact test recommendation: IELTS or TOEFL? (Pick ONE and explain why for THIS student)
-- MINIMUM score needed: [exact number]
-- COMPETITIVE score for ${studentData.major} at top ${studentData.targetCountry} universities: [exact number]
-- Your profile suggests you should aim for: [exact target]
+        while (turn < maxTurns) {
+            const functionCalls = response.functionCalls();
+            
+            if (functionCalls && functionCalls.length > 0) {
+                const call = functionCalls[0]; // Simplification: handle first call
+                if (call.name === "get_scholarships") {
+                    const apiResponse = getScholarships(call.args);
+                    result = await chat.sendMessage([
+                        {
+                            functionResponse: {
+                                name: "get_scholarships",
+                                response: { scholarships: apiResponse } 
+                            }
+                        }
+                    ]);
+                    response = result.response;
+                }
+            } else {
+                break;
+            }
+            turn++;
+        }
 
-**For ${studentData.education} → University Admission:**
-- List SPECIFIC tests needed (SAT/ACT/GRE/GMAT/None)
-- Give EXACT score targets (e.g., "SAT: 1450+, specifically Math: 750+, Reading: 700+")
-- Explain WHY these scores for ${studentData.major}
-
-**Timeline for ${studentData.name}:**
-- Month 1-2: [specific preparation actions]
-- Month 3: [test date recommendation]
-- Month 4-5: [next steps]
-
-## 🎓 University Recommendations for ${studentData.major}
-
-**CRITICAL: Name SPECIFIC universities with SPECIFIC programs!**
-
-### 🚀 Reach Schools (Highly Competitive)
-For each university, provide:
-1. **[Exact University Name]** - [Specific Program Name]
-   - Why it fits ${studentData.name}: [Personal reason based on their ${studentData.major} interest]
-   - Admission requirements for ${studentData.citizenship} students: [Specific numbers]
-   - What makes you competitive: [Based on their actual profile]
-   - What you need to strengthen: [Specific action]
-
-*List 3-4 reach schools following this format*
-
-### 🎯 Target Schools (Good Match)
-*Same detailed format for 3-4 target schools*
-
-### ✅ Safety Schools (High Acceptance Probability)
-*Same detailed format for 2-3 safety schools*
-
-## 💰 Scholarship Opportunities
-
-**DO NOT list generic scholarships!**
-
-Provide:
-1. **[Specific Scholarship Name]** for ${studentData.citizenship} students studying ${studentData.major}
-   - Award amount: [exact $ or %]
-   - Eligibility for ${studentData.name}: [Why they qualify or what they need]
-   - Application deadline: [Month/Year or "Rolling"]
-   - Your chances: [Realistic assessment]
-
-*List 3-4 REAL, SPECIFIC scholarships*
-
-## 📅 Month-by-Month Action Plan for ${studentData.name}
-
-**Current Date: February 2026**
-
-Create a CONCRETE timeline:
-
-**February-March 2026:**
-- [ ] Week 1: [Specific action]
-- [ ] Week 2-3: [Specific action]
-- [ ] By End of March: [Specific milestone]
-
-**April-May 2026:**
-- [ ] [Specific actions with dates]
-
-**June-July 2026:**
-- [ ] [Specific test dates, application prep]
-
-*Continue through at least 12 months with SPECIFIC actions*
-
-## 🎯 Top 3 Priorities for ${studentData.name} THIS MONTH
-
-1. **[Specific Action]** - Why: [Reason based on their profile]
-2. **[Specific Action]** - Deadline: [Exact date]
-3. **[Specific Action]** - How: [Concrete steps]
-
----
-
-**Final Note:** Remember, ${studentData.name}, this plan is tailored for your ${studentData.gpa} GPA, ${studentData.englishLevel} English level, and passion for ${studentData.major}. Focus on the "Top 3 Priorities" first, then follow the monthly plan.
-
-**REMEMBER**: Use their name (${studentData.name}) throughout. Be specific, not generic. Reference their actual data points. Give exact numbers, dates, and university names.
-        `;
-
-        console.log('🤖 Calling Gemini API...');
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
         const text = response.text();
+        console.log('✅ Response generated successfully');
+        
+        // Cleanup uploaded file
+        if (transcriptFile) {
+            try {
+                if (fs.existsSync(transcriptFile.path)) fs.unlinkSync(transcriptFile.path);
+            } catch (e) {
+                console.error("Failed to delete file:", e);
+            }
+        }
 
-        console.log('✅ Response generated successfully\n');
         res.json({ advice: text });
 
     } catch (error) {
         console.error('❌ Error calling Gemini API:', error);
-        
-        // Return more specific error information
-        const errorMessage = error.message || 'Unknown error occurred';
         res.status(500).json({ 
             error: 'Failed to generate advice',
-            details: errorMessage,
-            hint: 'Check your GEMINI_API_KEY in .env file'
+            details: error.message 
         });
     }
 });
@@ -191,7 +213,7 @@ app.post('/api/chat', async (req, res) => {
         console.log(`   Question: ${question}`);
         console.log(`   Language: ${language || 'en'}`);
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
         const languageInstruction = language === 'ru' 
             ? 'Respond in Russian (Русский язык).'

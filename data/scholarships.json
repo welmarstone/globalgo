@@ -1,0 +1,112 @@
+[
+  {
+    "id": "daad-epos",
+    "name": "DAAD Development-Related Postgraduate Courses (EPOS)",
+    "target_country": "Germany",
+    "eligible_citizenships": ["Developing Countries", "Azerbaijan", "All"],
+    "education_levels": ["Master", "PhD"],
+    "majors": ["Development", "Engineering", "Mathematics", "Architecture", "Medicine"],
+    "amount": "Monthly stipend of 934 EUR",
+    "deadline": "Varies (Aug-Oct)",
+    "link": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/"
+  },
+  {
+    "id": "chevening",
+    "name": "Chevening Scholarships",
+    "target_country": "UK",
+    "eligible_citizenships": ["Azerbaijan", "All"],
+    "education_levels": ["Master"],
+    "majors": ["All"],
+    "amount": "Full funding (flights, accommodation, course fees)",
+    "deadline": "November",
+    "link": "https://www.chevening.org/"
+  },
+  {
+    "id": "visegrad",
+    "name": "Visegrad Scholarship Program",
+    "target_country": "Visegrad Group (Czechia, Hungary, Poland, Slovakia)",
+    "eligible_citizenships": ["Azerbaijan", "Armenia", "Georgia", "Ukraine", "All"],
+    "education_levels": ["Master", "PhD"],
+    "majors": ["All"],
+    "amount": "2,500 EUR/semester",
+    "deadline": "March 15",
+    "link": "https://www.visegradfund.org/apply/mobilities/scholarship-program/"
+  },
+  {
+    "id": "stipendium-hungaricum",
+    "name": "Stipendium Hungaricum",
+    "target_country": "Hungary",
+    "eligible_citizenships": ["Azerbaijan", "Turkey", "Georgia", "All"],
+    "education_levels": ["Bachelor", "Master", "PhD"],
+    "majors": ["All"],
+    "amount": "Tuition-free, monthly stipend, accommodation",
+    "deadline": "January 15",
+    "link": "https://stipendiumhungaricum.hu/"
+  },
+  {
+    "id": "swedish-institute",
+    "name": "Swedish Institute Scholarships for Global Professionals",
+    "target_country": "Sweden",
+    "eligible_citizenships": ["Azerbaijan", "Turkey", "Georgia", "All"],
+    "education_levels": ["Master"],
+    "majors": ["All"],
+    "amount": "Full tuition + 12,000 SEK/month",
+    "deadline": "February",
+    "link": "https://si.se/en/apply/scholarships/swedish-institute-scholarships-for-global-professionals/"
+  },
+  {
+    "id": "turkiye-burslari",
+    "name": "Türkiye Scholarships",
+    "target_country": "Turkey",
+    "eligible_citizenships": ["All"],
+    "education_levels": ["Bachelor", "Master", "PhD"],
+    "majors": ["All"],
+    "amount": "Tuition, stipend, accommodation, flight",
+    "deadline": "February 20",
+    "link": "https://www.turkiyeburslari.gov.tr/"
+  },
+  {
+    "id": "invest-your-talent-italy",
+    "name": "Invest Your Talent in Italy",
+    "target_country": "Italy",
+    "eligible_citizenships": ["Azerbaijan", "Turkey", "Iran", "Georgia", "Kazakhstan"],
+    "education_levels": ["Master"],
+    "majors": ["Engineering", "Architecture", "Design", "Economics", "Management"],
+    "amount": "900 EUR/month + Tuition Fee Exemption",
+    "deadline": "January - February",
+    "link": "https://investyourtalentapplication.esteri.it/"
+  },
+  {
+    "id": "maeci-italy",
+    "name": "MAECI Italian Government Scholarships",
+    "target_country": "Italy",
+    "eligible_citizenships": ["Azerbaijan", "Turkey", "Georgia", "Armenia", "Ukraine"],
+    "education_levels": ["Master", "PhD"],
+    "majors": ["All"],
+    "amount": "900 EUR/month + Tuition Waiver",
+    "deadline": "June",
+    "link": "https://studyinitaly.esteri.it/en/call-for-procedure"
+  },
+  {
+    "id": "htp-china",
+    "name": "China-Azerbaijan Intergovernmental Scholarship (HTP)",
+    "target_country": "China",
+    "eligible_citizenships": ["Azerbaijan"],
+    "education_levels": ["Bachelor", "Master", "PhD"],
+    "majors": ["All"],
+    "amount": "Full tuition, accommodation, monthly stipend, medical insurance",
+    "deadline": "January - February",
+    "link": "https://htp.edu.az/"
+  },
+  {
+    "id": "state-program-2022-2026",
+    "name": "State Program (Dövlət Proqramı 2022-2026)",
+    "target_country": "Global (Top Universities)",
+    "eligible_citizenships": ["Azerbaijan"],
+    "education_levels": ["Bachelor", "Master"],
+    "majors": ["Priority fields determined by the State"],
+    "amount": "Full coverage: Tuition, living expenses, travel, insurance, visa",
+    "deadline": "April - June (varies annually)",
+    "link": "https://dp.edu.az/"
+  }
+]
